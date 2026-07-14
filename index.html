@@ -661,23 +661,6 @@
 
   <div class="card">
     <div class="section-subtitle">各付费层级每日活跃人数变化（7/9-7/13）</div>
-    <div class="chart-container tall">
-      <canvas id="chartDailyActive"></canvas>
-    </div>
-    <p style="font-size:13px;color:var(--text-muted);margin-top:8px;">
-      ※ Y轴为对数刻度，便于同时展示量级差异大的各层级。7/9为开服首日，所有用户均为新进。
-    </p>
-  </div>
-
-  <div class="card">
-    <div class="section-subtitle">各付费层级每日付费人数变化</div>
-    <div class="chart-container tall">
-      <canvas id="chartDailyPaying"></canvas>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="section-subtitle">各层级付费人数变化明细</div>
     <table>
       <thead>
         <tr>
@@ -688,7 +671,7 @@
           <th class="text-right">7/12</th>
           <th class="text-right">7/13（最新）</th>
           <th class="text-right">5日变化</th>
-          <th class="text-center">趋势</th>
+          <th class="text-center">趋势判断</th>
         </tr>
       </thead>
       <tbody>
@@ -699,18 +682,103 @@
           <td class="text-right">3,892,131</td>
           <td class="text-right">3,566,121</td>
           <td class="text-right">3,150,630</td>
-          <td class="text-right" style="color:var(--green);">-40.5%</td>
-          <td class="text-center"><span class="badge badge-green">正常流失</span></td>
+          <td class="text-right" style="color:var(--red);">-40.5%</td>
+          <td class="text-center"><span class="badge badge-green">自然衰减</span></td>
         </tr>
+        <tr>
+          <td>微R(0,30]</td>
+          <td class="text-right">536,263</td>
+          <td class="text-right">547,465</td>
+          <td class="text-right">535,759</td>
+          <td class="text-right">509,341</td>
+          <td class="text-right">468,594</td>
+          <td class="text-right" style="color:var(--red);">-12.6%</td>
+          <td class="text-center"><span class="badge badge-orange">缓慢萎缩</span></td>
+        </tr>
+        <tr>
+          <td>小R(30,100]</td>
+          <td class="text-right">110,296</td>
+          <td class="text-right">117,163</td>
+          <td class="text-right">119,401</td>
+          <td class="text-right">117,416</td>
+          <td class="text-right">111,540</td>
+          <td class="text-right" style="color:var(--green);">+1.1%</td>
+          <td class="text-center"><span class="badge badge-green">相对稳定</span></td>
+        </tr>
+        <tr>
+          <td>中R(100,500]</td>
+          <td class="text-right">26,601</td>
+          <td class="text-right">28,594</td>
+          <td class="text-right">29,219</td>
+          <td class="text-right">28,911</td>
+          <td class="text-right">27,718</td>
+          <td class="text-right" style="color:var(--green);">+4.2%</td>
+          <td class="text-center"><span class="badge badge-green">稳中有升</span></td>
+        </tr>
+        <tr>
+          <td>中大R(500,1000]</td>
+          <td class="text-right">8,814</td>
+          <td class="text-right">9,592</td>
+          <td class="text-right">10,014</td>
+          <td class="text-right">10,032</td>
+          <td class="text-right">9,692</td>
+          <td class="text-right" style="color:var(--green);">+10.0%</td>
+          <td class="text-center"><span class="badge badge-green">增长强劲</span></td>
+        </tr>
+        <tr>
+          <td>大R(1000,3000]</td>
+          <td class="text-right">3,114</td>
+          <td class="text-right">3,423</td>
+          <td class="text-right">3,534</td>
+          <td class="text-right">3,586</td>
+          <td class="text-right">3,526</td>
+          <td class="text-right" style="color:var(--green);">+13.2%</td>
+          <td class="text-center"><span class="badge badge-green">增长强劲</span></td>
+        </tr>
+        <tr>
+          <td>超R 3000+</td>
+          <td class="text-right">67</td>
+          <td class="text-right">74</td>
+          <td class="text-right">81</td>
+          <td class="text-right">84</td>
+          <td class="text-right">78</td>
+          <td class="text-right" style="color:var(--green);">+16.4%</td>
+          <td class="text-center"><span class="badge badge-green">增长强劲</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:13px;color:var(--text-muted);margin-top:8px;">
+      ※ 零氪/微R活跃人数随开服热度回落持续下降；小R及以上层级活跃人数不降反升（+1%~+16%），说明<strong>核心付费用户的留存和活跃度在提升</strong>，正在形成稳定的付费活跃底盘。
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="section-subtitle">各付费层级每日付费人数变化</div>
+    <table>
+      <thead>
+        <tr>
+          <th>付费层级</th>
+          <th class="text-right">7/9（开服）</th>
+          <th class="text-right">7/10</th>
+          <th class="text-right">7/11</th>
+          <th class="text-right">7/12</th>
+          <th class="text-right">7/13（最新）</th>
+          <th class="text-right">环比(7/12→</br>7/13)</th>
+          <th class="text-right">5日变化</th>
+          <th class="text-center">趋势</th>
+        </tr>
+      </thead>
+      <tbody>
         <tr>
           <td>微R(0,30]</td>
           <td class="text-right">298,003</td>
           <td class="text-right">173,092</td>
           <td class="text-right">116,443</td>
           <td class="text-right">91,254</td>
-          <td class="text-right">94,568</td>
+          <td class="text-right"><strong>94,568</strong></td>
+          <td class="text-right" style="color:var(--green);">+3.6%</td>
           <td class="text-right" style="color:var(--red);">-68.3%</td>
-          <td class="text-center"><span class="badge badge-red">大幅下降</span></td>
+          <td class="text-center"><span class="badge badge-green">企稳反弹</span></td>
         </tr>
         <tr>
           <td>小R(30,100]</td>
@@ -719,8 +787,9 @@
           <td class="text-right">36,826</td>
           <td class="text-right">30,893</td>
           <td class="text-right">28,701</td>
+          <td class="text-right" style="color:var(--red);">-7.1%</td>
           <td class="text-right" style="color:var(--red);">-57.8%</td>
-          <td class="text-center"><span class="badge badge-red">持续下降</span></td>
+          <td class="text-center"><span class="badge badge-orange">降速放缓</span></td>
         </tr>
         <tr>
           <td>中R(100,500]</td>
@@ -729,6 +798,7 @@
           <td class="text-right">11,907</td>
           <td class="text-right">9,802</td>
           <td class="text-right">8,745</td>
+          <td class="text-right" style="color:var(--red);">-10.8%</td>
           <td class="text-right" style="color:var(--red);">-54.2%</td>
           <td class="text-center"><span class="badge badge-red">持续下降</span></td>
         </tr>
@@ -739,6 +809,7 @@
           <td class="text-right">3,805</td>
           <td class="text-right">3,053</td>
           <td class="text-right">2,556</td>
+          <td class="text-right" style="color:var(--red);">-16.3%</td>
           <td class="text-right" style="color:var(--red);">-59.5%</td>
           <td class="text-center"><span class="badge badge-red">持续下降</span></td>
         </tr>
@@ -749,6 +820,7 @@
           <td class="text-right">1,577</td>
           <td class="text-right">1,293</td>
           <td class="text-right">1,101</td>
+          <td class="text-right" style="color:var(--red);">-14.9%</td>
           <td class="text-right" style="color:var(--red);">-51.9%</td>
           <td class="text-center"><span class="badge badge-red">持续下降</span></td>
         </tr>
@@ -759,11 +831,15 @@
           <td class="text-right">33</td>
           <td class="text-right">32</td>
           <td class="text-right">24</td>
+          <td class="text-right" style="color:var(--red);">-25.0%</td>
           <td class="text-right" style="color:var(--red);">-53.8%</td>
           <td class="text-center"><span class="badge badge-red">持续下降</span></td>
         </tr>
       </tbody>
     </table>
+    <p style="font-size:13px;color:var(--text-muted);margin-top:8px;">
+      ※ 微R在7/13出现首个反弹日（+3.6%），这是5日以来的首次正增长，与活跃人数表的"核心用户留存提升"相互印证。
+    </p>
   </div>
 
   <div class="two-col">
@@ -1231,49 +1307,6 @@ safeChart('chartDrawSegments', {
   }
 });
 
-// 9. 每日活跃人数
-safeChart('chartDailyActive', {
-  type: 'line',
-  data: {
-    labels: ['7/9', '7/10', '7/11', '7/12', '7/13'],
-    datasets: [
-      { label: '零氪[0]', data: [5293483, 4262847, 3892131, 3566121, 3150630], borderColor: COLORS.gray, backgroundColor: 'transparent', tension: 0.3 },
-      { label: '微R(0,30]', data: [536263, 547465, 535759, 509341, 468594], borderColor: COLORS.green, backgroundColor: 'transparent', tension: 0.3 },
-      { label: '小R(30,100]', data: [110296, 117163, 119401, 117416, 111540], borderColor: COLORS.teal, backgroundColor: 'transparent', tension: 0.3 },
-      { label: '中R(100,500]', data: [26601, 28594, 29219, 28911, 27718], borderColor: COLORS.blue, backgroundColor: 'transparent', tension: 0.3 },
-      { label: '中大R(500,1000]', data: [8814, 9592, 10014, 10032, 9692], borderColor: COLORS.purple, backgroundColor: 'transparent', tension: 0.3 },
-      { label: '大R(1000,3000]', data: [3114, 3423, 3534, 3586, 3526], borderColor: COLORS.red, backgroundColor: 'transparent', tension: 0.3 },
-      { label: '超R 3000+', data: [67, 74, 81, 84, 78], borderColor: COLORS.pink, backgroundColor: 'transparent', tension: 0.3 }
-    ]
-  },
-  options: {
-    plugins: { legend: { position: 'right', labels: { font: { size: 11 } } } },
-    scales: { y: { type: 'logarithmic', title: { display: true, text: '活跃人数（对数刻度）' }, grid: { color: '#f0f0f0' } },
-              x: { grid: { display: false } } }
-  }
-});
-
-// 10. 每日付费人数
-safeChart('chartDailyPaying', {
-  type: 'line',
-  data: {
-    labels: ['7/9', '7/10', '7/11', '7/12', '7/13'],
-    datasets: [
-      { label: '微R(0,30]', data: [298003, 173092, 116443, 91254, 94568], borderColor: COLORS.green, backgroundColor: 'transparent', tension: 0.3 },
-      { label: '小R(30,100]', data: [67974, 46505, 36826, 30893, 28701], borderColor: COLORS.teal, backgroundColor: 'transparent', tension: 0.3 },
-      { label: '中R(100,500]', data: [19115, 14550, 11907, 9802, 8745], borderColor: COLORS.blue, backgroundColor: 'transparent', tension: 0.3 },
-      { label: '中大R(500,1000]', data: [6310, 4624, 3805, 3053, 2556], borderColor: COLORS.purple, backgroundColor: 'transparent', tension: 0.3 },
-      { label: '大R(1000,3000]', data: [2287, 1943, 1577, 1293, 1101], borderColor: COLORS.red, backgroundColor: 'transparent', tension: 0.3 },
-      { label: '超R 3000+', data: [52, 41, 33, 32, 24], borderColor: COLORS.pink, backgroundColor: 'transparent', tension: 0.3 }
-    ]
-  },
-  options: {
-    plugins: { legend: { position: 'right', labels: { font: { size: 11 } } } },
-    scales: { y: { type: 'logarithmic', title: { display: true, text: '付费人数（对数刻度）' }, grid: { color: '#f0f0f0' } },
-              x: { grid: { display: false } } }
-  }
-});
-
 // 11. 渗透率趋势
 safeChart('chartPenetrationTrend', {
   type: 'line',
@@ -1408,8 +1441,6 @@ safeChart('chartKpiArpu', {
 }
 
 </script>
-
-</div>
 
 </body>
 </html>
