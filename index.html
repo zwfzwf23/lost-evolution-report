@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>失控进化 - 商业化分析报告</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #f5f6f8;
+    --card-bg: #ffffff;
+    --text-primary: #1a1a2e;
+    --text-secondary: #555;
+    --text-muted: #888;
+    --border: #e8e8e8;
+    --accent: #4f6ef7;
+    --accent-light: #eef1fe;
+    --red: #e74c3c;
+    --green: #27ae60;
+    --orange: #f39c12;
+    --purple: #9b59b6;
+    --teal: #1abc9c;
+    --pink: #e84393;
+    --shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.7;
+    padding: 0;
+  }
+  .header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #fff;
+    padding: 48px 40px 40px;
+  }
+  .header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  .header .subtitle { font-size: 14px; opacity: 0.7; }
+  .header .meta { font-size: 13px; opacity: 0.5; margin-top: 12px; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 32px 40px 80px; }
+
+  .section { margin-bottom: 48px; }
+  .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-left: 14px;
+    border-left: 4px solid var(--accent);
+    color: var(--text-primary);
+  }
+  .section-subtitle {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 24px 0 12px;
+    color: var(--text-primary);
+  }
+
+  .card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+  }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .kpi-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .kpi-card .label { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+  .kpi-card .value { font-size: 28px; font-weight: 700; color: var(--text-primary); }
+  .kpi-card .sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+  .kpi-card.highlight .value { color: var(--accent); }
+  .kpi-card.warning .value { color: var(--orange); }
+  .kpi-card.danger .value { color: var(--red); }
+  .kpi-card.success .value { color: var(--green); }
+
+  .chart-container {
+    position: relative;
+    height: 400px;
+    margin: 16px 0;
+  }
+  .chart-container.small { height: 320px; }
+  .chart-container.tall { height: 450px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  table th {
+    background: #f8f9fa;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  table tr:hover td { background: #fafbfc; }
+  .text-right { text-align: right; }
+  .text-center { text-align: center; }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .badge-red { background: #fde8e8; color: #c0392b; }
+  .badge-green { background: #e8f8f0; color: #27ae60; }
+  .badge-orange { background: #fef3e2; color: #e67e22; }
+  .badge-blue { background: #e8f0fe; color: #1967d2; }
+  .badge-gray { background: #f0f0f0; color: #666; }
+
+  .insight-box {
+    border-left: 4px solid var(--accent);
+    background: var(--accent-light);
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .insight-box.warning { border-left-color: var(--orange); background: #fef9f0; }
+  .insight-box.danger { border-left-color: var(--red); background: #fef2f1; }
+  .insight-box.success { border-left-color: var(--green); background: #f0faf4; }
+
+  .insight-box strong { display: block; margin-bottom: 6px; font-size: 15px; }
+
+  .progress-bar {
+    height: 24px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+  .progress-bar .fill {
+    height: 100%;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 30px;
+  }
+
+  .summary-box {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+  }
+  .summary-box h3 { font-size: 18px; margin-bottom: 12px; }
+  .summary-box ul { list-style: none; }
+  .summary-box li {
+    padding: 6px 0;
+    font-size: 14px;
+    opacity: 0.95;
+    padding-left: 20px;
+    position: relative;
+  }
+  .summary-box li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+  }
+
+  .toc {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow: var(--shadow);
+    margin-bottom: 32px;
+  }
+  .toc h3 { font-size: 15px; margin-bottom: 10px; color: var(--text-secondary); }
+  .toc ol { padding-left: 20px; }
+  .toc li { padding: 3px 0; font-size: 14px; }
+  .toc a { color: var(--accent); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: 6px;
+  }
+
+  @media (max-width: 768px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .two-col, .three-col { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>失控进化 · 商业化分析报告</h1>
+  <div class="subtitle">数据周期：2026-07-09 ~ 2026-07-13（上线5日累计口径）</div>
+  <div class="meta">报告生成时间：2026-07-14 | 数据来源：商业化系统各项埋点统计</div>
+</div>
+
+<div class="container">
+
+<!-- TOC -->
+<div class="toc">
+  <h3>报告目录</h3>
+  <ol>
+    <li><a href="#overview">商业化全景概览</a></li>
+    <li><a href="#penetration">各系统渗透率与消费结构分析</a></li>
+    <li><a href="#bp">BP（通行证）问题诊断</a></li>
+    <li><a href="#fenghuo">烽火江山卡池分析</a></li>
+    <li><a href="#draws">抽奖抽数分布分析</a></li>
+    <li><a href="#payment">付费用户分层人数变化分析</a></li>
+    <li><a href="#conclusion">核心结论与优化建议</a></li>
+  </ol>
+</div>
+
+<!-- 核心摘要 -->
+<div class="summary-box">
+  <h3>核心摘要</h3>
+  <ul>
+    <li>项目上线5日活跃用户约1040万，总消费渗透率8.89%，付费用户约92.5万</li>
+    <li><strong>BP（通行证）渗透率严重偏低</strong>：1.31%的渗透率在全系统排名倒数第二，仅触达13.6万活跃用户，与千万级用户体量严重不匹配</li>
+    <li><strong>烽火江山是商业化绝对主力，但抽数深度不足</strong>：5日累计消耗2.03亿RMB，覆盖278.7万人（活跃渗透26.8%），然而人均仅12.16抽，大部分用户集中在6-10抽区间就停止</li>
+    <li><strong>用户抽奖深度不足，缺乏持续消费动力</strong>：烽火江山人均12.16抽但58%仅6-10抽；不放回抽奖人均仅1.25-1.77抽，用户"浅尝辄止"特征突出</li>
+    <li><strong>付费分层呈断崖式衰退</strong>：微R以上各层级付费人数5日下降50-68%，且渗透率持续下滑，付费底盘在快速萎缩</li>
+    <li><strong>收入结构头部依赖严重</strong>：中大R及以上用户仅占付费人数的不足3%，却贡献了超43%的流水，抗风险能力弱</li>
+  </ul>
+</div>
+
+<!-- 1. 商业化全景概览 -->
+<div class="section" id="overview">
+  <div class="section-title">一、商业化全景概览</div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card highlight">
+      <div class="label">累计活跃人数</div>
+      <div class="value">1,039.5万</div>
+      <div class="sub">上线5日（7/9-7/13）</div>
+    </div>
+    <div class="kpi-card success">
+      <div class="label">总消费人数</div>
+      <div class="value">92.5万</div>
+      <div class="sub">渗透率 8.89%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">总消费金额（RMB）</div>
+      <div class="value">5,552万</div>
+      <div class="sub">含咕咕币折算</div>
+    </div>
+    <div class="kpi-card warning">
+      <div class="label">咕咕币总消耗</div>
+      <div class="value">4.95亿</div>
+      <div class="sub">全系统合计</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-subtitle">各商业化系统核心指标一览</div>
+    <table>
+      <thead>
+        <tr>
+          <th>系统</th>
+          <th class="text-right">消费人数</th>
+          <th class="text-right">渗透率</th>
+          <th class="text-right">消费金额（RMB）</th>
+          <th class="text-right">消费占比</th>
+          <th class="text-right">咕咕币消耗</th>
+          <th class="text-right">咕咕币消耗占比</th>
+          <th class="text-center">状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>不放回抽奖</td>
+          <td class="text-right">516,195</td>
+          <td class="text-right">4.97%</td>
+          <td class="text-right">2,228.8万</td>
+          <td class="text-right">40.14%</td>
+          <td class="text-right">2.23亿</td>
+          <td class="text-right">44.98%</td>
+          <td class="text-center"><span class="badge badge-green">主力</span></td>
+        </tr>
+        <tr>
+          <td>放回抽奖</td>
+          <td class="text-right">303,821</td>
+          <td class="text-right">2.92%</td>
+          <td class="text-right">1,547.3万</td>
+          <td class="text-right">27.87%</td>
+          <td class="text-right">1.55亿</td>
+          <td class="text-right">31.23%</td>
+          <td class="text-center"><span class="badge badge-blue">重要</span></td>
+        </tr>
+        <tr>
+          <td>潘多拉</td>
+          <td class="text-right">822,396</td>
+          <td class="text-right">7.91%</td>
+          <td class="text-right">695.5万</td>
+          <td class="text-right">12.53%</td>
+          <td class="text-right">2,025万</td>
+          <td class="text-right">4.09%</td>
+          <td class="text-center"><span class="badge badge-blue">高渗透</span></td>
+        </tr>
+        <tr>
+          <td>通行证（BP）</td>
+          <td class="text-right">135,853</td>
+          <td class="text-right">1.31%</td>
+          <td class="text-right">724.2万</td>
+          <td class="text-right">13.04%</td>
+          <td class="text-right">7,242万</td>
+          <td class="text-right">14.62%</td>
+          <td class="text-center"><span class="badge badge-red">渗透低</span></td>
+        </tr>
+        <tr>
+          <td>商城</td>
+          <td class="text-right">137,855</td>
+          <td class="text-right">1.33%</td>
+          <td class="text-right">163.9万</td>
+          <td class="text-right">2.95%</td>
+          <td class="text-right">596万</td>
+          <td class="text-right">1.20%</td>
+          <td class="text-center"><span class="badge badge-orange">偏低</span></td>
+        </tr>
+        <tr>
+          <td>捆绑包</td>
+          <td class="text-right">19,990</td>
+          <td class="text-right">0.19%</td>
+          <td class="text-right">192.2万</td>
+          <td class="text-right">3.46%</td>
+          <td class="text-right">1,922万</td>
+          <td class="text-right">3.88%</td>
+          <td class="text-center"><span class="badge badge-red">极低</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 2. 渗透率与消费结构 -->
+<div class="section" id="penetration">
+  <div class="section-title">二、各系统渗透率与消费结构分析</div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="section-subtitle">各系统消费渗透率对比</div>
+      <div class="chart-container small">
+        <canvas id="chartPenetration"></canvas>
+      </div>
+      <div class="insight-box danger">
+        <strong>渗透率断层明显</strong>
+        潘多拉（7.91%）> 不放回抽奖（4.97%）> 放回抽奖（2.92%）>> 通行证（1.31%）≈ 商城（1.33%）> 捆绑包（0.19%）。通行证和商城的渗透率仅约1.3%，远低于抽奖类系统。
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-subtitle">各系统消费金额占比</div>
+      <div class="chart-container small">
+        <canvas id="chartConsumption"></canvas>
+      </div>
+      <div class="insight-box warning">
+        <strong>消费高度依赖抽奖</strong>
+        不放回抽奖（40.1%）+ 放回抽奖（27.9%）合计占据68%的消费份额。通行证虽消费占比13.0%高于其渗透率排名，但考虑到BP通常是稳定收入支柱，该比例仍然偏低。
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-subtitle">渗透率 vs 消费占比：效率象限分析</div>
+    <div class="chart-container">
+      <canvas id="chartScatter"></canvas>
+    </div>
+    <p style="font-size:13px;color:var(--text-muted);margin-top:8px;">
+      ※ 气泡大小代表消费金额规模。理想状态是渗透率和消费占比双高（右上象限）。通行证位于"低渗透-中消费"区域，说明客单价尚可但触达不足。
+    </p>
+  </div>
+</div>
+
+<!-- 3. BP问题诊断 -->
+<div class="section" id="bp">
+  <div class="section-title">三、BP（通行证）：渗透与消费双低，商业化短板最突出</div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card danger">
+      <div class="label">BP渗透率</div>
+      <div class="value">1.31%</div>
+      <div class="sub">仅13.6万人购买</div>
+    </div>
+    <div class="kpi-card warning">
+      <div class="label">BP消费占比（RMB）</div>
+      <div class="value">13.04%</div>
+      <div class="sub">724.2万元</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">BP咕咕币消耗占比</div>
+      <div class="value">14.62%</div>
+      <div class="sub">7,242万咕咕币</div>
+    </div>
+    <div class="kpi-card highlight">
+      <div class="label">BP人均消费</div>
+      <div class="value">¥53.3</div>
+      <div class="sub">客单价尚可</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-subtitle">BP渗透率与各系统对比</div>
+    <div style="margin-bottom:16px;">
+      <div style="display:flex;align-items:center;margin-bottom:10px;">
+        <span style="width:100px;font-size:13px;color:var(--text-secondary);">潘多拉</span>
+        <div class="progress-bar" style="flex:1;">
+          <div class="fill" style="width:100%;background:var(--green);">7.91%</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;margin-bottom:10px;">
+        <span style="width:100px;font-size:13px;color:var(--text-secondary);">不放回抽奖</span>
+        <div class="progress-bar" style="flex:1;">
+          <div class="fill" style="width:62.8%;background:var(--teal);">4.97%</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;margin-bottom:10px;">
+        <span style="width:100px;font-size:13px;color:var(--text-secondary);">放回抽奖</span>
+        <div class="progress-bar" style="flex:1;">
+          <div class="fill" style="width:36.9%;background:var(--accent);">2.92%</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;margin-bottom:10px;">
+        <span style="width:100px;font-size:13px;color:var(--text-secondary);">商城</span>
+        <div class="progress-bar" style="flex:1;">
+          <div class="fill" style="width:16.8%;background:var(--orange);">1.33%</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;margin-bottom:10px;">
+        <span style="width:100px;font-size:13px;color:var(--text-secondary);">通行证(BP)</span>
+        <div class="progress-bar" style="flex:1;">
+          <div class="fill" style="width:16.5%;background:var(--red);">1.31%</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;">
+        <span style="width:100px;font-size:13px;color:var(--text-secondary);">捆绑包</span>
+        <div class="progress-bar" style="flex:1;">
+          <div class="fill" style="width:2.4%;background:#ccc;">0.19%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-box danger">
+      <strong>诊断结论：BP是目前商业化系统中最大的短板</strong>
+      BP渗透率仅1.31%，在6大商业化系统中排名第5（仅高于捆绑包）。消费占比13.04%虽然看起来排名靠前，但这是建立在人均¥53.3的较高客单价基础上——即少数人买了，但绝大多数活跃用户没有购买。对于一个上线初期、用户规模超千万的项目，BP仅触达1.3%的用户，说明BP的价值传达和购买引导存在明显短板。
+    </div>
+
+    <div class="insight-box warning">
+      <strong>可能的原因分析</strong>
+      <ul style="margin-left:16px;margin-top:4px;">
+        <li>BP的奖励吸引力不足或感知门槛过高，用户认为"不值得买"</li>
+        <li>BP的入口曝光不足，新用户不知道有通行证系统</li>
+        <li>BP任务体系可能过于繁重或奖励周期过长，用户在开服初期还没感受到BP价值</li>
+        <li>开服初期抽奖类活动吸引力远高于通行证，用户消费预算被抽奖分流</li>
+        <li>BP定价策略可能偏高，与微R用户（占付费用户69.7%）的支付意愿不匹配</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- 4. 烽火江山卡池分析 -->
+<div class="section" id="fenghuo">
+  <div class="section-title">四、烽火江山卡池：商业化绝对主力，但抽数深度是瓶颈</div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="label">烽火江山参与人数</div>
+      <div class="value">278.7万</div>
+      <div class="sub">占活跃用户26.8%（5日累计）</div>
+    </div>
+    <div class="kpi-card warning">
+      <div class="label">RMB消耗总数</div>
+      <div class="value">2.03亿</div>
+      <div class="sub">5日累计（7/9-7/13）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">人均抽取次数</div>
+      <div class="value">12.16次</div>
+      <div class="sub">人均消费¥72.93</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">最高级物品获取率</div>
+      <div class="value">24%</div>
+      <div class="sub">67.9万人获得</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-subtitle">三大卡池横向对比</div>
+    <table>
+      <thead>
+        <tr>
+          <th>卡池</th>
+          <th>类型</th>
+          <th class="text-right">RMB消耗</th>
+          <th class="text-right">参与人数</th>
+          <th class="text-right">人均抽数</th>
+          <th class="text-right">人均消费</th>
+          <th class="text-right">抽取次数合计</th>
+          <th class="text-right">高级物品获取率</th>
+          <th class="text-center">诊断</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>烽火江山</td>
+          <td>放回抽奖</td>
+          <td class="text-right">2.03亿</td>
+          <td class="text-right">2,787,242</td>
+          <td class="text-right">12.16</td>
+          <td class="text-right">¥72.93</td>
+          <td class="text-right">33,880,546</td>
+          <td class="text-right">24%</td>
+          <td class="text-center"><span class="badge badge-green">核心主力</span></td>
+        </tr>
+        <tr>
+          <td>绯夜猫影</td>
+          <td>不放回抽奖</td>
+          <td class="text-right">2,682.9万</td>
+          <td class="text-right">753,126</td>
+          <td class="text-right">1.77</td>
+          <td class="text-right">¥35.62</td>
+          <td class="text-right">1,330,349</td>
+          <td class="text-right">7%</td>
+          <td class="text-center"><span class="badge badge-red">抽数极低</span></td>
+        </tr>
+        <tr>
+          <td>涂鸦狂潮</td>
+          <td>不放回抽奖</td>
+          <td class="text-right">693.7万</td>
+          <td class="text-right">463,767</td>
+          <td class="text-right">1.25</td>
+          <td class="text-right">¥14.96</td>
+          <td class="text-right">577,565</td>
+          <td class="text-right">82%</td>
+          <td class="text-center"><span class="badge badge-red">抽数极低</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="section-subtitle">三大卡池RMB消耗横向比较（5日累计）</div>
+      <div class="chart-container small">
+        <canvas id="chartFenghuoShare"></canvas>
+      </div>
+      <div class="insight-box">
+        <strong>烽火江山：用户覆盖面广，但抽数深度仍待提升</strong>
+        5日累计参与278.7万人（78.7%的活跃用户），渗透率是三大卡池中最高的，RMB消耗达<strong>2.03亿</strong>，是当前商业化体系的绝对主力。但人均12.16抽说明大部分用户仍停留在浅层消费——投入6-10抽就停手。67.9万人获得最高级物品（24%获取率），证明奖励触达面不窄，但未能驱动用户追加抽取。
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-subtitle">卡池人均抽数对比</div>
+      <div class="chart-container small">
+        <canvas id="chartAvgDraws"></canvas>
+      </div>
+      <div class="insight-box danger">
+        <strong>不放回抽奖抽数极低，规模化后依然如此</strong>
+        绯夜猫影人均仅1.77抽（75.3万人参与）、涂鸦狂潮仅1.25抽（46.4万人参与）。即使用户基数放大到数十万规模，"一抽即走"的行为模式完全没有改变。绯夜猫影用户抽了就走、涂鸦狂潮用户抽到高级物品（82%获取率）就停——两个极端，都缺乏复抽动力。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. 抽数分布分析 -->
+<div class="section" id="draws">
+  <div class="section-title">五、抽奖抽数分布：浅层消费为主，深度转化严重不足</div>
+
+  <div class="card">
+    <div class="section-subtitle">烽火江山抽数区间分布</div>
+    <div class="chart-container">
+      <canvas id="chartDrawDistribution"></canvas>
+    </div>
+
+    <table style="margin-top:16px;">
+      <thead>
+        <tr>
+          <th>抽数区间</th>
+          <th class="text-right">区间人数</th>
+          <th class="text-right">占比</th>
+          <th class="text-right">累计占比</th>
+          <th class="text-center">特征</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1次</td><td class="text-right">1,437</td><td class="text-right">1.3%</td><td class="text-right">1.3%</td><td class="text-center"><span class="badge badge-gray">试水</span></td></tr>
+        <tr><td>2次</td><td class="text-right">653</td><td class="text-right">0.6%</td><td class="text-right">1.9%</td><td class="text-center"><span class="badge badge-gray">试水</span></td></tr>
+        <tr><td>3次</td><td class="text-right">529</td><td class="text-right">0.5%</td><td class="text-right">2.4%</td><td class="text-center"><span class="badge badge-gray">试水</span></td></tr>
+        <tr><td>4次</td><td class="text-right">410</td><td class="text-right">0.4%</td><td class="text-right">2.8%</td><td class="text-center"><span class="badge badge-gray">试水</span></td></tr>
+        <tr><td>5次</td><td class="text-right">319</td><td class="text-right">0.3%</td><td class="text-right">3.1%</td><td class="text-center"><span class="badge badge-gray">试水</span></td></tr>
+        <tr style="background:#fff8e1;"><td><strong>6-10次</strong></td><td class="text-right"><strong>62,119</strong></td><td class="text-right"><strong>57.7%</strong></td><td class="text-right"><strong>60.8%</strong></td><td class="text-center"><span class="badge badge-orange">主力人群</span></td></tr>
+        <tr><td>11-20次</td><td class="text-right">25,449</td><td class="text-right">23.6%</td><td class="text-right">84.4%</td><td class="text-center"><span class="badge badge-blue">中等投入</span></td></tr>
+        <tr><td>21-30次</td><td class="text-right">7,407</td><td class="text-right">6.9%</td><td class="text-right">91.3%</td><td class="text-center"><span class="badge badge-blue">中等投入</span></td></tr>
+        <tr><td>31-50次</td><td class="text-right">5,302</td><td class="text-right">4.9%</td><td class="text-right">96.2%</td><td class="text-center"><span class="badge badge-green">深度投入</span></td></tr>
+        <tr><td>51-100次</td><td class="text-right">2,657</td><td class="text-right">2.5%</td><td class="text-right">98.7%</td><td class="text-center"><span class="badge badge-green">深度投入</span></td></tr>
+        <tr><td>101-150次</td><td class="text-right">622</td><td class="text-right">0.6%</td><td class="text-right">99.3%</td><td class="text-center"><span class="badge badge-red">头部</span></td></tr>
+        <tr><td>151-250次</td><td class="text-right">289</td><td class="text-right">0.3%</td><td class="text-right">99.6%</td><td class="text-center"><span class="badge badge-red">头部</span></td></tr>
+        <tr><td>251次+</td><td class="text-right">462</td><td class="text-right">0.4%</td><td class="text-right">100%</td><td class="text-center"><span class="badge badge-red">头部</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="section-subtitle">抽数区间累计占比</div>
+      <div class="chart-container small">
+        <canvas id="chartCumulativeDraws"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-subtitle">用户分层（按抽数）</div>
+      <div class="chart-container small">
+        <canvas id="chartDrawSegments"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-box danger">
+    <strong>抽数分布核心问题：浅层消费主导，深度转化乏力</strong>
+    <ul style="margin-left:16px;margin-top:4px;">
+      <li><strong>烽火江山</strong>：57.7%的用户仅抽取6-10次，84.4%的用户抽取不超过20次。虽然人均12.16次不算特别低，但这是被少数高抽数用户拉高的结果，中位数估计在8-10次左右。</li>
+      <li><strong>不放回抽奖</strong>：绯夜猫影人均1.77抽、涂鸦狂潮人均1.25抽，绝大多数用户仅抽1-2次就走。不放回抽奖的保底机制可能缺乏吸引力，或者奖池内容价值不足以驱动多次抽取。</li>
+      <li><strong>放回抽奖的24%高级物品获取率</strong>意味着约每4抽出一个高级物品，67.9万人获得过，概率和覆盖面都不低，但大部分用户依然没有持续抽取的动力，可能是奖励内容本身的边际吸引力下降过快。</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 6. 付费用户分层 -->
+<div class="section" id="payment">
+  <div class="section-title">六、付费用户分层人数变化分析</div>
+
+  <div class="card">
+    <div class="section-subtitle">各付费层级每日活跃人数变化（7/9-7/13）</div>
+    <div class="chart-container tall">
+      <canvas id="chartDailyActive"></canvas>
+    </div>
+    <p style="font-size:13px;color:var(--text-muted);margin-top:8px;">
+      ※ Y轴为对数刻度，便于同时展示量级差异大的各层级。7/9为开服首日，所有用户均为新进。
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="section-subtitle">各付费层级每日付费人数变化</div>
+    <div class="chart-container tall">
+      <canvas id="chartDailyPaying"></canvas>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-subtitle">各层级付费人数变化明细</div>
+    <table>
+      <thead>
+        <tr>
+          <th>付费层级</th>
+          <th class="text-right">7/9（开服）</th>
+          <th class="text-right">7/10</th>
+          <th class="text-right">7/11</th>
+          <th class="text-right">7/12</th>
+          <th class="text-right">7/13（最新）</th>
+          <th class="text-right">5日变化</th>
+          <th class="text-center">趋势</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>零氪[0]</td>
+          <td class="text-right">5,293,483</td>
+          <td class="text-right">4,262,847</td>
+          <td class="text-right">3,892,131</td>
+          <td class="text-right">3,566,121</td>
+          <td class="text-right">3,150,630</td>
+          <td class="text-right" style="color:var(--green);">-40.5%</td>
+          <td class="text-center"><span class="badge badge-green">正常流失</span></td>
+        </tr>
+        <tr>
+          <td>微R(0,30]</td>
+          <td class="text-right">298,003</td>
+          <td class="text-right">173,092</td>
+          <td class="text-right">116,443</td>
+          <td class="text-right">91,254</td>
+          <td class="text-right">94,568</td>
+          <td class="text-right" style="color:var(--red);">-68.3%</td>
+          <td class="text-center"><span class="badge badge-red">大幅下降</span></td>
+        </tr>
+        <tr>
+          <td>小R(30,100]</td>
+          <td class="text-right">67,974</td>
+          <td class="text-right">46,505</td>
+          <td class="text-right">36,826</td>
+          <td class="text-right">30,893</td>
+          <td class="text-right">28,701</td>
+          <td class="text-right" style="color:var(--red);">-57.8%</td>
+          <td class="text-center"><span class="badge badge-red">持续下降</span></td>
+        </tr>
+        <tr>
+          <td>中R(100,500]</td>
+          <td class="text-right">19,115</td>
+          <td class="text-right">14,550</td>
+          <td class="text-right">11,907</td>
+          <td class="text-right">9,802</td>
+          <td class="text-right">8,745</td>
+          <td class="text-right" style="color:var(--red);">-54.2%</td>
+          <td class="text-center"><span class="badge badge-red">持续下降</span></td>
+        </tr>
+        <tr>
+          <td>中大R(500,1000]</td>
+          <td class="text-right">6,310</td>
+          <td class="text-right">4,624</td>
+          <td class="text-right">3,805</td>
+          <td class="text-right">3,053</td>
+          <td class="text-right">2,556</td>
+          <td class="text-right" style="color:var(--red);">-59.5%</td>
+          <td class="text-center"><span class="badge badge-red">持续下降</span></td>
+        </tr>
+        <tr>
+          <td>大R(1000,3000]</td>
+          <td class="text-right">2,287</td>
+          <td class="text-right">1,943</td>
+          <td class="text-right">1,577</td>
+          <td class="text-right">1,293</td>
+          <td class="text-right">1,101</td>
+          <td class="text-right" style="color:var(--red);">-51.9%</td>
+          <td class="text-center"><span class="badge badge-red">持续下降</span></td>
+        </tr>
+        <tr>
+          <td>超R 3000+</td>
+          <td class="text-right">52</td>
+          <td class="text-right">41</td>
+          <td class="text-right">33</td>
+          <td class="text-right">32</td>
+          <td class="text-right">24</td>
+          <td class="text-right" style="color:var(--red);">-53.8%</td>
+          <td class="text-center"><span class="badge badge-red">持续下降</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="section-subtitle">各层级渗透率变化趋势</div>
+      <div class="chart-container tall">
+        <canvas id="chartPenetrationTrend"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-subtitle">各层级充值流水占比变化</div>
+      <div class="chart-container tall">
+        <canvas id="chartRevenueShare"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-subtitle">各层级每日充值流水变化</div>
+    <div class="chart-container tall">
+      <canvas id="chartDailyRevenue"></canvas>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-subtitle">付费层级流水占比明细（7/13 最新日）</div>
+    <table>
+      <thead>
+        <tr>
+          <th>付费层级</th>
+          <th class="text-right">活跃人数</th>
+          <th class="text-right">付费人数</th>
+          <th class="text-right">充值流水</th>
+          <th class="text-right">流水占比</th>
+          <th class="text-right">活跃ARPU</th>
+          <th class="text-right">付费ARPPU</th>
+          <th class="text-right">渗透率</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>零氪[0]</td><td class="text-right">3,150,630</td><td class="text-right">0</td><td class="text-right">0</td><td class="text-right">0%</td><td class="text-right">¥0</td><td class="text-right">-</td><td class="text-right">0%</td></tr>
+        <tr><td>微R(0,30]</td><td class="text-right">468,594</td><td class="text-right">94,568</td><td class="text-right">70.0万</td><td class="text-right">14.75%</td><td class="text-right">¥1</td><td class="text-right">¥7</td><td class="text-right">20.18%</td></tr>
+        <tr><td>小R(30,100]</td><td class="text-right">111,540</td><td class="text-right">28,701</td><td class="text-right">118.3万</td><td class="text-right">24.94%</td><td class="text-right">¥11</td><td class="text-right">¥41</td><td class="text-right">25.73%</td></tr>
+        <tr><td>中R(100,500]</td><td class="text-right">27,718</td><td class="text-right">8,745</td><td class="text-right">81.3万</td><td class="text-right">17.13%</td><td class="text-right">¥29</td><td class="text-right">¥93</td><td class="text-right">31.55%</td></tr>
+        <tr><td>中大R(500,1000]</td><td class="text-right">9,692</td><td class="text-right">2,556</td><td class="text-right">107.6万</td><td class="text-right">22.68%</td><td class="text-right">¥111</td><td class="text-right">¥421</td><td class="text-right">26.37%</td></tr>
+        <tr><td>大R(1000,3000]</td><td class="text-right">3,526</td><td class="text-right">1,101</td><td class="text-right">93.2万</td><td class="text-right">19.64%</td><td class="text-right">¥264</td><td class="text-right">¥846</td><td class="text-right">31.23%</td></tr>
+        <tr><td>超R 3000+</td><td class="text-right">78</td><td class="text-right">24</td><td class="text-right">4.1万</td><td class="text-right">0.86%</td><td class="text-right">¥525</td><td class="text-right">¥1,706</td><td class="text-right">30.77%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight-box warning">
+    <strong>付费分层核心发现</strong>
+    <ul style="margin-left:16px;margin-top:4px;">
+      <li><strong>开服效应消退明显</strong>：7/9开服当日各层级付费人数均达峰值，之后5天内微R以上各层级付费人数均下降50%-68%，呈现典型的开服脉冲后快速衰减特征。</li>
+      <li><strong>微R用户流失最严重</strong>：从29.8万降至9.5万（-68.3%），微R是付费用户的基本盘（占付费人数69.7%），其大幅流失直接影响整体付费规模。</li>
+      <li><strong>中大R及以上用户虽少但贡献大</strong>：7/13日中大R+大R+超R合计仅12,927人（占付费用户9.5%），但贡献了43.2%的流水。</li>
+      <li><strong>渗透率全面下滑</strong>：各付费层级的渗透率（付费人数/活跃人数）从7/9到7/13均呈下降趋势。微R渗透率从55.6%降至20.2%，小R从61.6%降至25.7%，中R从71.9%降至31.6%。</li>
+      <li><strong>活跃用户基数也在收缩</strong>：零氪活跃从529万降至315万（-40.5%），说明整体活跃盘子在缩小，这与开服效应消退一致。</li>
+      <li><strong>微R在7/13出现企稳迹象</strong>：付费人数从7/12的91,254小幅回升至94,568（+3.6%），但其他层级仍在下降。</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 7. 结论与建议 -->
+<div class="section" id="conclusion">
+  <div class="section-title">七、核心结论与优化建议</div>
+
+  <div class="card">
+    <div class="section-subtitle">商业化健康度诊断矩阵</div>
+    <table>
+      <thead>
+        <tr>
+          <th>商业化系统</th>
+          <th class="text-center">健康度评级</th>
+          <th class="text-right">渗透率</th>
+          <th class="text-right">消费占比</th>
+          <th>核心问题诊断</th>
+          <th class="text-center">调整紧迫度</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>BP（通行证）</strong></td>
+          <td class="text-center"><span class="badge badge-red">⚠️ 预警</span></td>
+          <td class="text-right">1.31%</td>
+          <td class="text-right">13.04%</td>
+          <td>渗透率倒数第二，与千万级用户规模严重不匹配；消费占比靠人均¥53.3客单价支撑而非用户量驱动。作为本应承担收入稳定器作用的常驻系统，当前表现远不及预期。</td>
+          <td class="text-center"><span class="badge badge-red">紧急</span></td>
+        </tr>
+        <tr>
+          <td><strong>烽火江山（放回抽奖）</strong></td>
+          <td class="text-center"><span class="badge badge-green">✅ 主力</span></td>
+          <td class="text-right">26.81%</td>
+          <td class="text-right">—</td>
+          <td>5日2.03亿RMB消耗，278.7万人参与，覆盖面和流水体量均为全系统第一。但人均12.16抽偏低，58%用户仅6-10抽即停，抽数深度是核心瓶颈。24%高级物品获取率触发面广（67.9万人），但未能转化为复抽动力。</td>
+          <td class="text-center"><span class="badge badge-orange">高</span></td>
+        </tr>
+        <tr>
+          <td><strong>不放回抽奖</strong></td>
+          <td class="text-center"><span class="badge badge-orange">⚠️ 关注</span></td>
+          <td class="text-right">4.97%</td>
+          <td class="text-right">40.14%</td>
+          <td>消费占比最高但人均仅1.25-1.77抽，"一抽即走"现象严重。绯夜猫影高级物品获取率仅7%，用户动力不足；涂鸦狂潮获取率82%反而让用户抽到即停。奖池机制需重新设计。</td>
+          <td class="text-center"><span class="badge badge-orange">高</span></td>
+        </tr>
+        <tr>
+          <td><strong>捆绑包</strong></td>
+          <td class="text-center"><span class="badge badge-red">⚠️ 预警</span></td>
+          <td class="text-right">0.19%</td>
+          <td class="text-right">3.46%</td>
+          <td>渗透率垫底，仅1.99万人购买。两个组合包上架时间标注"暂无"，疑似存在配置问题或曝光严重不足，几乎可以视为失效的商业化入口。</td>
+          <td class="text-center"><span class="badge badge-orange">高</span></td>
+        </tr>
+        <tr>
+          <td><strong>商城</strong></td>
+          <td class="text-center"><span class="badge badge-orange">⚠️ 关注</span></td>
+          <td class="text-right">1.33%</td>
+          <td class="text-right">2.95%</td>
+          <td>作为常驻消费入口，消费占比不到3%。虽然用户习惯建立需要时间，但开服首周表现过于疲软，商品结构和定价策略需要重新审视。</td>
+          <td class="text-center"><span class="badge badge-blue">中</span></td>
+        </tr>
+        <tr>
+          <td><strong>潘多拉</strong></td>
+          <td class="text-center"><span class="badge badge-green">✅ 健康</span></td>
+          <td class="text-right">7.91%</td>
+          <td class="text-right">12.53%</td>
+          <td>渗透率全系统最高（7.91%），触达82万用户，是目前覆盖最广的商业化入口。可作为引流和联动其他系统的桥梁，但独立消费贡献一般。</td>
+          <td class="text-center"><span class="badge badge-gray">低</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="section-subtitle">优化建议</div>
+
+    <div class="insight-box danger" style="margin-bottom:16px;">
+      <strong>1. BP（通行证）紧急优化 — 最高优先级</strong>
+      <ul style="margin-left:16px;margin-top:4px;">
+        <li><strong>降低购买门槛</strong>：考虑推出开服限时折扣或入门版BP，降低微R用户的购买阻力（微R付费用户人均仅¥7，对当前BP定价可能有价格敏感）</li>
+        <li><strong>强化BP入口曝光</strong>：在主界面、抽奖结算页、任务完成页等高频触达点增加BP购买引导</li>
+        <li><strong>前置BP价值感知</strong>：提供首日免费试玩体验或预览全部奖励，让用户在购买前就能感受到BP价值</li>
+        <li><strong>增加即时 gratification</strong>：BP前期奖励加大，缩短首次奖励获取周期，避免用户因"看不到回报"而放弃</li>
+        <li><strong>与抽奖联动</strong>：BP等级提升赠送抽奖券或咕咕币，打通BP与抽奖系统的消费链路</li>
+      </ul>
+    </div>
+
+    <div class="insight-box warning" style="margin-bottom:16px;">
+      <strong>2. 烽火江山抽数深度提升 — 高优先级</strong>
+      <ul style="margin-left:16px;margin-top:4px;">
+        <li><strong>巩固现有优势</strong>：烽火江山已是商业化绝对主力（2.03亿/278.7万人），渗透率26.8%说明用户接受度高，应作为核心商业化载体持续运营</li>
+        <li><strong>突破6-10抽瓶颈</strong>：58%用户停留在此区间，需要设置明确的"再抽目标"——例如10抽后触发"再抽5次必得限定"、累计20抽送保底道具</li>
+        <li><strong>利用24%获取率做文章</strong>：67.9万人拿到了最高级物品，可以设计"收集2个/3个才解锁皮肤/特效"等二级目标，推动已获得用户继续抽取</li>
+        <li><strong>人均¥72.93→目标¥120+</strong>：当前客单价不低但提升空间大，可通过累抽阶梯奖励拉高ARPPU</li>
+      </ul>
+    </div>
+
+    <div class="insight-box" style="margin-bottom:16px;">
+      <strong>3. 不放回抽奖卡池改造 — 中优先级</strong>
+      <ul style="margin-left:16px;margin-top:4px;">
+        <li><strong>绯夜猫影</strong>：人均1.77抽、高级物品获取率仅7%，说明用户抽了就走且几乎拿不到好东西。建议降低保底抽数或提升前期物品质量</li>
+        <li><strong>涂鸦狂潮</strong>：人均1.25抽最低，但高级物品获取率82%反而最高——说明用户抽1-2次就拿到了想要的东西就停了。需要增加更多层级的奖励来驱动复抽</li>
+        <li><strong>整体策略</strong>：不放回抽奖的"一次性"特征太强，建议引入"重置奖池"或"多轮抽取"机制，延长用户消费周期</li>
+      </ul>
+    </div>
+
+    <div class="insight-box success" style="margin-bottom:16px;">
+      <strong>4. 付费用户留存与分层经营 — 长期优先级</strong>
+      <ul style="margin-left:16px;margin-top:4px;">
+        <li><strong>微R用户基本盘维护</strong>：微R占付费人数69.7%但流失68.3%，是挽回付费规模的关键。建议推出每日小额礼包、连续登录奖励等低门槛付费点</li>
+        <li><strong>推动微R→小R升级</strong>：微R渗透率从55.6%降至20.2%，但客单价仅¥7。通过首充翻倍、限时升级礼包等手段推动微R向小R（¥30-100）转化</li>
+        <li><strong>中大R用户深度运营</strong>：中大R+大R占付费人数不足3%但贡献43%流水，是核心收入来源。需要专属客服、VIP礼包、提前体验等差异化服务</li>
+        <li><strong>遏制渗透率下滑</strong>：各层级渗透率5天内全面下滑，需要通过运营活动（如周末双倍、限时返利）拉升日活和付费意愿</li>
+      </ul>
+    </div>
+
+    <div class="insight-box">
+      <strong>5. 捆绑包与商城补齐 — 低优先级</strong>
+      <ul style="margin-left:16px;margin-top:4px;">
+        <li>捆绑包渗透率仅0.19%（约2万人），消费占比3.46%。街头艺术两个组合包上架时间标注"暂无"，可能存在上架配置问题</li>
+        <li>商城渗透率1.33%，消费占比仅2.95%，作为常驻商业化入口严重不足。建议优化商品结构和定价策略</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);color:#fff;">
+    <div class="section-subtitle" style="color:#fff;">总结</div>
+    <p style="font-size:14px;line-height:1.9;opacity:0.9;">
+      失控进化上线5日累计活跃1040万、总消费5552万，开局数据体量可观。但商业化结构存在<strong style="color:#f39c12;">"隐性失衡"</strong>的隐患：
+      <strong style="color:#e74c3c;">BP渗透低</strong>（1.31%，倒数第二）、<strong style="color:#e74c3c;">不放回抽奖人均抽数极低</strong>（1.25-1.77抽）、<strong style="color:#f39c12;">烽火江山抽数深度不足</strong>（人均12.16抽，58%仅6-10抽）、<strong style="color:#f39c12;">收入高度依赖抽奖和头部付费用户</strong>（抽奖占68%流水，中大R以上贡献43%）。
+      烽火江山虽然是商业化绝对主力（5日2.03亿、278.7万参与），但用户消费深度仍有较大提升空间。叠加开服脉冲效应快速消退（各层级付费人数5日下降50-68%），若不及时优化BP触达、提升卡池消费深度、加强微R留存，后续付费规模可能持续下滑。
+    </p>
+  </div>
+</div>
+
+</div>
+
+<script>
+// Chart.js 全局配置
+if (typeof Chart === 'undefined') {
+  document.body.insertAdjacentHTML('beforeend', '<div style="text-align:center;padding:40px;color:#e74c3c;">⚠️ Chart.js 加载失败，图表无法渲染。请检查网络连接后刷新页面。</div>');
+} else {
+Chart.defaults.font.family = "'-apple-system', 'PingFang SC', 'Microsoft YaHei', sans-serif";
+Chart.defaults.font.size = 12;
+Chart.defaults.color = '#555';
+
+const COLORS = {
+  red: '#e74c3c', green: '#27ae60', orange: '#f39c12',
+  purple: '#9b59b6', teal: '#1abc9c', pink: '#e84393',
+  blue: '#3498db', accent: '#4f6ef7', gray: '#95a5a6',
+  darkBlue: '#2c3e50', yellow: '#f1c40f', cyan: '#00b894'
+};
+
+function safeChart(id, config) {
+  try {
+    const el = document.getElementById(id);
+    if (!el) { console.warn('Canvas not found:', id); return null; }
+    return new Chart(el, config);
+  } catch(e) {
+    console.error('Chart error [' + id + ']:', e.message);
+    const el = document.getElementById(id);
+    if (el && el.parentElement) {
+      el.parentElement.insertAdjacentHTML('beforeend', '<div style="text-align:center;padding:20px;color:#e74c3c;font-size:13px;">⚠️ 图表渲染失败</div>');
+    }
+    return null;
+  }
+}
+
+// 1. 渗透率对比
+safeChart('chartPenetration', {
+  type: 'bar',
+  data: {
+    labels: ['潘多拉', '不放回抽奖', '放回抽奖', '商城', '通行证(BP)', '捆绑包'],
+    datasets: [{
+      data: [7.91, 4.97, 2.92, 1.33, 1.31, 0.19],
+      backgroundColor: [COLORS.green, COLORS.teal, COLORS.blue, COLORS.orange, COLORS.red, COLORS.gray],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => c.raw + '%' } } },
+    scales: { x: { title: { display: true, text: '渗透率 (%)' }, grid: { color: '#f0f0f0' } } }
+  }
+});
+
+// 2. 消费占比
+safeChart('chartConsumption', {
+  type: 'doughnut',
+  data: {
+    labels: ['不放回抽奖', '放回抽奖', '通行证(BP)', '潘多拉', '捆绑包', '商城'],
+    datasets: [{
+      data: [40.14, 27.87, 13.04, 12.53, 3.46, 2.95],
+      backgroundColor: [COLORS.teal, COLORS.blue, COLORS.red, COLORS.purple, COLORS.orange, COLORS.gray],
+      borderWidth: 2, borderColor: '#fff'
+    }]
+  },
+  options: {
+    plugins: { legend: { position: 'right', labels: { font: { size: 11 } } },
+      tooltip: { callbacks: { label: c => c.label + ': ' + c.raw + '%' } } }
+  }
+});
+
+// 3. 散点图
+safeChart('chartScatter', {
+  type: 'bubble',
+  data: {
+    datasets: [
+      { label: '不放回抽奖', data: [{x: 4.97, y: 40.14, r: 25}], backgroundColor: 'rgba(26,188,156,0.6)', borderColor: COLORS.teal },
+      { label: '放回抽奖', data: [{x: 2.92, y: 27.87, r: 20}], backgroundColor: 'rgba(52,152,219,0.6)', borderColor: COLORS.blue },
+      { label: '潘多拉', data: [{x: 7.91, y: 12.53, r: 18}], backgroundColor: 'rgba(155,89,182,0.6)', borderColor: COLORS.purple },
+      { label: '通行证(BP)', data: [{x: 1.31, y: 13.04, r: 15}], backgroundColor: 'rgba(231,76,60,0.6)', borderColor: COLORS.red },
+      { label: '商城', data: [{x: 1.33, y: 2.95, r: 8}], backgroundColor: 'rgba(243,156,18,0.6)', borderColor: COLORS.orange },
+      { label: '捆绑包', data: [{x: 0.19, y: 3.46, r: 6}], backgroundColor: 'rgba(149,165,166,0.6)', borderColor: COLORS.gray }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'right' } },
+    scales: {
+      x: { title: { display: true, text: '渗透率 (%)' }, grid: { color: '#f0f0f0' } },
+      y: { title: { display: true, text: '消费占比 (%)' }, grid: { color: '#f0f0f0' } }
+    }
+  }
+});
+
+// 4. 烽火江山占比
+safeChart('chartFenghuoShare', {
+  type: 'bar',
+  data: {
+    labels: ['烽火江山', '绯夜猫影', '涂鸦狂潮'],
+    datasets: [{
+      label: 'RMB消耗（万元）',
+      data: [20328, 2683, 694],
+      backgroundColor: [COLORS.blue, COLORS.purple, COLORS.pink],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => '¥' + c.raw + '万' } } },
+    scales: { y: { title: { display: true, text: 'RMB消耗（万元）' }, grid: { color: '#f0f0f0' } } }
+  }
+});
+
+// 5. 人均抽数对比
+safeChart('chartAvgDraws', {
+  type: 'bar',
+  data: {
+    labels: ['烽火江山', '绯夜猫影', '涂鸦狂潮'],
+    datasets: [{
+      data: [12.16, 1.77, 1.25],
+      backgroundColor: [COLORS.blue, COLORS.purple, COLORS.pink],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => '人均' + c.raw + '抽' } } },
+    scales: { y: { title: { display: true, text: '人均抽取次数' }, grid: { color: '#f0f0f0' } } }
+  }
+});
+
+// 6. 抽数分布柱状图
+safeChart('chartDrawDistribution', {
+  type: 'bar',
+  data: {
+    labels: ['1次', '2次', '3次', '4次', '5次', '6-10次', '11-20次', '21-30次', '31-50次', '51-100次', '101-150次', '151-250次', '251+次'],
+    datasets: [{
+      data: [1437, 653, 529, 410, 319, 62119, 25449, 7407, 5302, 2657, 622, 289, 462],
+      backgroundColor: ['#bdc3c7','#bdc3c7','#bdc3c7','#bdc3c7','#bdc3c7', COLORS.orange, COLORS.blue, COLORS.teal, COLORS.green, COLORS.green, COLORS.red, COLORS.red, COLORS.red],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => c.raw.toLocaleString() + '人' } } },
+    scales: { y: { title: { display: true, text: '人数' }, type: 'logarithmic', grid: { color: '#f0f0f0' } },
+              x: { grid: { display: false } } }
+  }
+});
+
+// 7. 累计占比
+safeChart('chartCumulativeDraws', {
+  type: 'line',
+  data: {
+    labels: ['1次', '2次', '3次', '4次', '5次', '6-10次', '11-20次', '21-30次', '31-50次', '51-100次', '101-150次', '151-250次', '251+次'],
+    datasets: [{
+      data: [1.3, 1.9, 2.4, 2.8, 3.1, 60.8, 84.4, 91.3, 96.2, 98.7, 99.3, 99.6, 100],
+      borderColor: COLORS.accent, backgroundColor: 'rgba(79,110,247,0.1)',
+      fill: true, tension: 0.3, pointRadius: 4
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => '累计' + c.raw + '%' } } },
+    scales: { y: { title: { display: true, text: '累计占比 (%)' }, max: 100, grid: { color: '#f0f0f0' } } }
+  }
+});
+
+// 8. 用户分层饼图
+safeChart('chartDrawSegments', {
+  type: 'doughnut',
+  data: {
+    labels: ['试水(1-5抽)', '主力(6-10抽)', '中等(11-30抽)', '深度(31-100抽)', '头部(101+抽)'],
+    datasets: [{
+      data: [3348, 62119, 32856, 7959, 1373],
+      backgroundColor: [COLORS.gray, COLORS.orange, COLORS.blue, COLORS.green, COLORS.red],
+      borderWidth: 2, borderColor: '#fff'
+    }]
+  },
+  options: {
+    plugins: { legend: { position: 'right', labels: { font: { size: 11 } } },
+      tooltip: { callbacks: { label: c => c.label + ': ' + c.raw.toLocaleString() + '人' } } }
+  }
+});
+
+// 9. 每日活跃人数
+safeChart('chartDailyActive', {
+  type: 'line',
+  data: {
+    labels: ['7/9', '7/10', '7/11', '7/12', '7/13'],
+    datasets: [
+      { label: '零氪[0]', data: [5293483, 4262847, 3892131, 3566121, 3150630], borderColor: COLORS.gray, backgroundColor: 'transparent', tension: 0.3 },
+      { label: '微R(0,30]', data: [536263, 547465, 535759, 509341, 468594], borderColor: COLORS.green, backgroundColor: 'transparent', tension: 0.3 },
+      { label: '小R(30,100]', data: [110296, 117163, 119401, 117416, 111540], borderColor: COLORS.teal, backgroundColor: 'transparent', tension: 0.3 },
+      { label: '中R(100,500]', data: [26601, 28594, 29219, 28911, 27718], borderColor: COLORS.blue, backgroundColor: 'transparent', tension: 0.3 },
+      { label: '中大R(500,1000]', data: [8814, 9592, 10014, 10032, 9692], borderColor: COLORS.purple, backgroundColor: 'transparent', tension: 0.3 },
+      { label: '大R(1000,3000]', data: [3114, 3423, 3534, 3586, 3526], borderColor: COLORS.red, backgroundColor: 'transparent', tension: 0.3 },
+      { label: '超R 3000+', data: [67, 74, 81, 84, 78], borderColor: COLORS.pink, backgroundColor: 'transparent', tension: 0.3 }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'right', labels: { font: { size: 11 } } } },
+    scales: { y: { type: 'logarithmic', title: { display: true, text: '活跃人数（对数刻度）' }, grid: { color: '#f0f0f0' } },
+              x: { grid: { display: false } } }
+  }
+});
+
+// 10. 每日付费人数
+safeChart('chartDailyPaying', {
+  type: 'line',
+  data: {
+    labels: ['7/9', '7/10', '7/11', '7/12', '7/13'],
+    datasets: [
+      { label: '微R(0,30]', data: [298003, 173092, 116443, 91254, 94568], borderColor: COLORS.green, backgroundColor: 'transparent', tension: 0.3 },
+      { label: '小R(30,100]', data: [67974, 46505, 36826, 30893, 28701], borderColor: COLORS.teal, backgroundColor: 'transparent', tension: 0.3 },
+      { label: '中R(100,500]', data: [19115, 14550, 11907, 9802, 8745], borderColor: COLORS.blue, backgroundColor: 'transparent', tension: 0.3 },
+      { label: '中大R(500,1000]', data: [6310, 4624, 3805, 3053, 2556], borderColor: COLORS.purple, backgroundColor: 'transparent', tension: 0.3 },
+      { label: '大R(1000,3000]', data: [2287, 1943, 1577, 1293, 1101], borderColor: COLORS.red, backgroundColor: 'transparent', tension: 0.3 },
+      { label: '超R 3000+', data: [52, 41, 33, 32, 24], borderColor: COLORS.pink, backgroundColor: 'transparent', tension: 0.3 }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'right', labels: { font: { size: 11 } } } },
+    scales: { y: { type: 'logarithmic', title: { display: true, text: '付费人数（对数刻度）' }, grid: { color: '#f0f0f0' } },
+              x: { grid: { display: false } } }
+  }
+});
+
+// 11. 渗透率趋势
+safeChart('chartPenetrationTrend', {
+  type: 'line',
+  data: {
+    labels: ['7/9', '7/10', '7/11', '7/12', '7/13'],
+    datasets: [
+      { label: '微R(0,30]', data: [55.57, 31.62, 21.73, 17.92, 20.18], borderColor: COLORS.green, backgroundColor: 'transparent', tension: 0.3 },
+      { label: '小R(30,100]', data: [61.63, 39.69, 30.84, 26.31, 25.73], borderColor: COLORS.teal, backgroundColor: 'transparent', tension: 0.3 },
+      { label: '中R(100,500]', data: [71.86, 50.88, 40.75, 33.90, 31.55], borderColor: COLORS.blue, backgroundColor: 'transparent', tension: 0.3 },
+      { label: '中大R(500,1000]', data: [71.59, 48.21, 38.00, 30.43, 26.37], borderColor: COLORS.purple, backgroundColor: 'transparent', tension: 0.3 },
+      { label: '大R(1000,3000]', data: [73.44, 56.76, 44.62, 36.06, 31.23], borderColor: COLORS.red, backgroundColor: 'transparent', tension: 0.3 },
+      { label: '超R 3000+', data: [77.61, 55.41, 40.74, 38.10, 30.77], borderColor: COLORS.pink, backgroundColor: 'transparent', tension: 0.3 }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'right', labels: { font: { size: 11 } } } },
+    scales: { y: { title: { display: true, text: '渗透率 (%)' }, max: 80, grid: { color: '#f0f0f0' } },
+              x: { grid: { display: false } } }
+  }
+});
+
+// 12. 流水占比变化
+safeChart('chartRevenueShare', {
+  type: 'bar',
+  data: {
+    labels: ['7/9', '7/10', '7/11', '7/12', '7/13'],
+    datasets: [
+      { label: '微R(0,30]', data: [19.33, 16.89, 14.10, 13.26, 14.75], backgroundColor: COLORS.green },
+      { label: '小R(30,100]', data: [24.29, 23.48, 23.93, 24.39, 24.94], backgroundColor: COLORS.teal },
+      { label: '中R(100,500]', data: [17.48, 16.90, 17.21, 17.30, 17.13], backgroundColor: COLORS.blue },
+      { label: '中大R(500,1000]', data: [22.02, 23.13, 24.26, 23.47, 22.68], backgroundColor: COLORS.purple },
+      { label: '大R(1000,3000]', data: [15.84, 18.90, 19.67, 20.45, 19.64], backgroundColor: COLORS.red },
+      { label: '超R 3000+', data: [1.04, 0.70, 0.84, 1.13, 0.86], backgroundColor: COLORS.pink }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'right', labels: { font: { size: 11 } } } },
+    scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, title: { display: true, text: '流水占比 (%)' }, max: 100, grid: { color: '#f0f0f0' } } }
+  }
+});
+
+// 13. 每日流水
+safeChart('chartDailyRevenue', {
+  type: 'line',
+  data: {
+    labels: ['7/9', '7/10', '7/11', '7/12', '7/13'],
+    datasets: [
+      { label: '微R(0,30]', data: [206.3, 122.4, 84.7, 67.9, 70.0], borderColor: COLORS.green, backgroundColor: 'transparent', tension: 0.3 },
+      { label: '小R(30,100]', data: [259.4, 170.2, 143.8, 125.0, 118.3], borderColor: COLORS.teal, backgroundColor: 'transparent', tension: 0.3 },
+      { label: '中R(100,500]', data: [186.6, 122.5, 103.5, 88.6, 81.3], borderColor: COLORS.blue, backgroundColor: 'transparent', tension: 0.3 },
+      { label: '中大R(500,1000]', data: [235.1, 167.7, 145.8, 120.3, 107.6], borderColor: COLORS.purple, backgroundColor: 'transparent', tension: 0.3 },
+      { label: '大R(1000,3000]', data: [169.1, 137.0, 118.2, 104.8, 93.2], borderColor: COLORS.red, backgroundColor: 'transparent', tension: 0.3 },
+      { label: '超R 3000+', data: [11.1, 5.1, 5.0, 5.8, 4.1], borderColor: COLORS.pink, backgroundColor: 'transparent', tension: 0.3 }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'right', labels: { font: { size: 11 } } },
+      tooltip: { callbacks: { label: c => c.dataset.label + ': ¥' + c.raw + '万' } } },
+    scales: { y: { title: { display: true, text: '充值流水（万元）' }, grid: { color: '#f0f0f0' } },
+              x: { grid: { display: false } } }
+  }
+});
+
+}
+
+</script>
+
+</body>
+</html>
