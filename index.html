@@ -244,9 +244,11 @@
 <div class="summary-box">
   <h3>核心摘要</h3>
   <ul>
-    <li>项目上线5日活跃用户约1040万，总消费渗透率8.89%，付费用户约92.5万</li>
+    <li>项目上线5日活跃用户约1040万，累计付费流水3,483万，付费用户约92.5万</li>
+    <li><strong>开服脉冲衰减趋于减速</strong>：单日流水从首日1,068万降至475万（-55.5%），但环比降幅从-32%收窄至-7.6%，付费用户数7/13仅降0.47%，底部接近确认</li>
+    <li><strong>结构性分化加剧</strong>：ARPPU逆势上升29%（¥27→¥35），但付费渗透率从6.59%腰斩至3.60%。留下的用户消费更强，但付费规模在萎缩</li>
     <li><strong>BP（通行证）渗透率严重偏低</strong>：1.31%的渗透率在全系统排名倒数第二，仅触达13.6万活跃用户，与千万级用户体量严重不匹配</li>
-    <li><strong>烽火江山是商业化绝对主力，但抽数深度不足</strong>：5日累计消耗2.03亿RMB，覆盖278.7万人（活跃渗透26.8%），然而人均仅12.16抽，大部分用户集中在6-10抽区间就停止</li>
+    <li><strong>烽火江山是商业化绝对主力，但抽数深度不足</strong>：5日累计覆盖278.7万人（活跃渗透26.8%），然而人均仅12.16抽，大部分用户集中在6-10抽区间就停止</li>
     <li><strong>用户抽奖深度不足，缺乏持续消费动力</strong>：烽火江山人均12.16抽但58%仅6-10抽；不放回抽奖人均仅1.25-1.77抽，用户"浅尝辄止"特征突出</li>
     <li><strong>付费分层呈断崖式衰退</strong>：微R以上各层级付费人数5日下降50-68%，且渗透率持续下滑，付费底盘在快速萎缩</li>
     <li><strong>收入结构头部依赖严重</strong>：中大R及以上用户仅占付费人数的不足3%，却贡献了超43%的流水，抗风险能力弱</li>
@@ -826,9 +828,103 @@
   </div>
 </div>
 
-<!-- 7. 结论与建议 -->
+<!-- 7. 付费核心指标走势分析 -->
+<div class="section" id="payTrend">
+  <div class="section-title">七、付费核心指标走势分析 — 开服脉冲衰减中的结构性分化</div>
+
+  <p style="margin-bottom:20px;color:#555;font-size:15px;">
+    本节基于7/9（开服日）至7/13（最新）的每日付费核心指标数据，分析商业化系统的付费转化走势，判断衰减趋势是否趋于稳定，并关联前文识别的商业化结构问题进行归因。
+  </p>
+
+  <div class="kpi-grid">
+    <div class="kpi-card warning">
+      <div class="label">5日累计付费流水</div>
+      <div class="value">3,483万</div>
+      <div class="sub">7/9-7/13 总流水</div>
+    </div>
+    <div class="kpi-card danger">
+      <div class="label">单日流水从峰值到最新</div>
+      <div class="value">-55.5%</div>
+      <div class="sub">1,068万 → 475万</div>
+    </div>
+    <div class="kpi-card warning">
+      <div class="label">付费用户数变化</div>
+      <div class="value">-65.5%</div>
+      <div class="sub">39.4万 → 13.6万</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">ARPPU走势</div>
+      <div class="value">+29.1%</div>
+      <div class="sub">¥27 → ¥35（逆势上升）</div>
+    </div>
+  </div>
+
+  <!-- 付费流水走势图 -->
+  <div class="card">
+    <div class="section-subtitle">每日付费流水与环比变化</div>
+    <div class="chart-container two-col">
+      <div style="flex:1"><canvas id="chartPayTrend"></canvas></div>
+      <div style="flex:1"><canvas id="chartPayersDAU"></canvas></div>
+    </div>
+  </div>
+
+  <!-- ARPPU/ARPU/渗透率 -->
+  <div class="card" style="margin-top:24px;">
+    <div class="section-subtitle">ARPPU、ARPU 与付费渗透率走势</div>
+    <div class="chart-container two-col">
+      <div style="flex:1"><canvas id="chartKpiArpu"></canvas></div>
+      <div style="flex:1">
+        <div style="height:100%;display:flex;flex-direction:column;justify-content:center;padding:0 16px;">
+          <table style="font-size:13px;">
+            <thead><tr><th>日期</th><th class="text-right">ARPPU</th><th class="text-right">ARPU</th><th class="text-right">渗透率</th><th class="text-right">单次付费</th></tr></thead>
+            <tbody>
+              <tr><td>7/09（开服）</td><td class="text-right">¥27.11</td><td class="text-right">¥1.79</td><td class="text-right">6.59%</td><td class="text-right">¥18.71</td></tr>
+              <tr><td>7/10</td><td class="text-right">¥30.12</td><td class="text-right">¥1.46</td><td class="text-right">4.85%</td><td class="text-right">¥20.24</td></tr>
+              <tr><td>7/11</td><td class="text-right">¥35.28</td><td class="text-right">¥1.31</td><td class="text-right">3.72%</td><td class="text-right">¥22.60</td></tr>
+              <tr><td>7/12</td><td class="text-right">¥37.65</td><td class="text-right">¥1.21</td><td class="text-right">3.22%</td><td class="text-right">¥23.37</td></tr>
+              <tr><td>7/13</td><td class="text-right">¥34.99</td><td class="text-right">¥1.26</td><td class="text-right">3.60%</td><td class="text-right">¥22.02</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 走势分析 -->
+  <div class="card" style="margin-top:24px;">
+    <div class="section-subtitle">走势特征与归因分析</div>
+
+    <div class="insight-box danger">
+      <strong>核心判断：开服脉冲快速衰减，但7/13出现结构性企稳信号</strong>
+      5日流水从1,068万降至475万，表面看跌幅55.5%很严重，但日均环比降幅从-32%→-17%→-15%→-7.6%持续收窄，7/13付费用户数仅较前日减少644人（-0.47%），呈现典型的"急速下跌→减速→企稳"曲线特征。若7/14-7/15能维持在450万以上且付费用户不再减少，则基本可以确认底部。
+    </div>
+
+    <div class="insight-box">
+      <strong>结构性分化：规模萎缩 vs 质量提升</strong><br><br>
+      <strong>付费用户量缩质升</strong>：ARPPU从¥27.11升至¥34.99（+29%），平均单次付费金额从¥18.71升至¥22.02（+17.7%）。这说明<strong style="color:#27ae60;">留下来的付费用户消费意愿更强、单次付费更高</strong>——不是所有用户都在流失，而是低质量付费用户在离开，核心付费用户群体正在沉淀。<br><br>
+      <strong>但ARPU持续走低</strong>：从¥1.79降至¥1.26（-29.6%）。ARPU=付费渗透率×ARPPU，ARPPU在升但ARPU在降，说明<strong style="color:#e74c3c;">渗透率的下降速度远超ARPPU的上升速度</strong>——付费用户占比从6.59%腰斩至3.60%，这是ARPU下行的根本原因。
+    </div>
+
+    <div class="insight-box warning">
+      <strong>商业化系统层面的三大关联归因</strong>
+      <ol style="margin:8px 0 0 16px;line-height:2;">
+        <li><strong>BP触达断层 → 付费转化漏斗断裂</strong>：BP渗透率仅1.31%，千万活跃用户中99%没有接触过这个最基础的付费入门产品。没有BP这个"付费第一站"，大量潜在付费用户直接面对抽奖和商城等中高门槛系统，付费转化路径过长。</li>
+        <li><strong>烽火江山浅层消费 → 付费留存引擎熄火</strong>：58%的用户仅抽6-10次即停，84%的用户不超过20抽。卡池本应是持续消费的引擎，但大多数用户"试试就走"，未能形成持续的消费习惯。这是付费用户数持续下降的核心原因之一。</li>
+        <li><strong>不放回抽奖人均不足2抽 → 首充用户快速流失</strong>：不放回抽奖吸引了51.6万消费用户（渗透率4.97%，全系统最高），但人均仅1.3-1.8抽。大量用户通过不放回抽奖完成首次付费后就再也没有第二次消费行为——这个入口"召之即来"却"留不住"。</li>
+      </ol>
+    </div>
+
+    <div class="insight-box">
+      <strong>关键观察：7/13企稳信号 & 风险</strong><br><br>
+      <strong>积极信号</strong>：7/13付费用户数仅下降0.47%，新增付费用户下降3.3%，两个关键指标都在接近平台期。同时ARPPU仍维持在¥35左右的较高水平，说明核心付费用户消费稳定。<br><br>
+      <strong>风险提示</strong>：7/13是周日（工作日），通常手游周末数据偏强，周一的7/14才是真正的考验。如果周一付费用户跌破13万、流水破450万，则底部尚未确认，需要警惕第二波下滑。
+    </div>
+  </div>
+</div>
+
+<!-- 8. 结论与建议 -->
 <div class="section" id="conclusion">
-  <div class="section-title">七、核心结论与优化建议</div>
+  <div class="section-title">八、核心结论与优化建议</div>
 
   <div class="card">
     <div class="section-subtitle">商业化健康度诊断矩阵</div>
@@ -1238,6 +1334,76 @@ safeChart('chartDailyRevenue', {
       tooltip: { callbacks: { label: c => c.dataset.label + ': ¥' + c.raw + '万' } } },
     scales: { y: { title: { display: true, text: '充值流水（万元）' }, grid: { color: '#f0f0f0' } },
               x: { grid: { display: false } } }
+  }
+});
+
+}
+
+// === 付费核心指标走势图表 ===
+
+// 14. 每日付费流水 + 环比变化率
+safeChart('chartPayTrend', {
+  type: 'bar',
+  data: {
+    labels: ['7/09(开服)', '7/10', '7/11', '7/12', '7/13'],
+    datasets: [
+      { label: '付费流水（万元）', data: [1067.6, 725.2, 601.9, 513.4, 474.9], backgroundColor: COLORS.accent+'CC', borderRadius: 6, yAxisID: 'y', order: 2 },
+      { label: '环比变化率', data: [null, -32.1, -17.0, -14.7, -7.6], type: 'line', borderColor: COLORS.red, backgroundColor: 'transparent', tension: 0.3, pointRadius: 5, pointBackgroundColor: COLORS.red, yAxisID: 'y1', order: 1, borderWidth: 2.5 }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, usePointStyle: true } },
+      tooltip: { callbacks: { label: c => c.datasetIndex===0 ? c.dataset.label+': ¥'+c.raw+'万' : c.dataset.label+': '+c.raw+'%' } } },
+    scales: {
+      y: { position: 'left', title: { display: true, text: '付费流水（万元）' }, grid: { color: '#f0f0f0' }, beginAtZero: false, min: 300 },
+      y1: { position: 'right', title: { display: true, text: '环比变化率（%）' }, grid: { drawOnChartArea: false }, max: 0, min: -40, ticks: { callback: v => v+'%' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// 15. 付费用户 & 活跃用户趋势
+safeChart('chartPayersDAU', {
+  type: 'line',
+  data: {
+    labels: ['7/09(开服)', '7/10', '7/11', '7/12', '7/13'],
+    datasets: [
+      { label: '活跃用户数（万）', data: [597.9, 496.9, 459.0, 423.5, 377.2], borderColor: COLORS.blue, backgroundColor: 'transparent', tension: 0.3, yAxisID: 'y', borderWidth: 2, pointRadius: 4 },
+      { label: '付费用户数（万）', data: [39.37, 24.08, 17.06, 13.64, 13.57], borderColor: COLORS.accent, backgroundColor: 'transparent', tension: 0.3, yAxisID: 'y1', borderWidth: 2.5, pointRadius: 5, pointBackgroundColor: COLORS.accent },
+      { label: '新增付费用户（万）', data: [39.37, 20.25, 13.07, 9.84, 9.52], borderColor: COLORS.teal, backgroundColor: 'transparent', tension: 0.3, yAxisID: 'y1', borderWidth: 1.5, pointRadius: 3, borderDash: [5, 5] }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, usePointStyle: true } },
+      tooltip: { callbacks: { label: c => c.dataset.label + ': ' + c.raw + '万' } } },
+    scales: {
+      y: { position: 'left', title: { display: true, text: '活跃用户（万）' }, grid: { color: '#f0f0f0' }, beginAtZero: false, min: 200 },
+      y1: { position: 'right', title: { display: true, text: '付费用户（万）' }, grid: { drawOnChartArea: false }, min: 0 },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// 16. ARPPU / ARPU / 付费渗透率
+safeChart('chartKpiArpu', {
+  type: 'line',
+  data: {
+    labels: ['7/09(开服)', '7/10', '7/11', '7/12', '7/13'],
+    datasets: [
+      { label: 'ARPPU（元）', data: [27.11, 30.12, 35.28, 37.65, 34.99], borderColor: COLORS.accent, backgroundColor: 'transparent', tension: 0.3, yAxisID: 'y', borderWidth: 2.5, pointRadius: 5, pointBackgroundColor: COLORS.accent },
+      { label: '平均单次付费（元）', data: [18.71, 20.24, 22.60, 23.37, 22.02], borderColor: COLORS.teal, backgroundColor: 'transparent', tension: 0.3, yAxisID: 'y', borderWidth: 2, pointRadius: 4, borderDash: [5,5] },
+      { label: 'ARPU（元）', data: [1.79, 1.46, 1.31, 1.21, 1.26], borderColor: COLORS.orange, backgroundColor: 'transparent', tension: 0.3, yAxisID: 'y1', borderWidth: 2, pointRadius: 4 },
+      { label: '付费渗透率（%）', data: [6.59, 4.85, 3.72, 3.22, 3.60], borderColor: COLORS.red, backgroundColor: 'transparent', tension: 0.3, yAxisID: 'y1', borderWidth: 2, pointRadius: 4, borderDash: [5,5] }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, usePointStyle: true, padding: 12 } },
+      tooltip: { callbacks: { label: c => c.dataset.label + ': ' + (c.datasetIndex<=1 ? '¥'+c.raw : c.raw+(c.datasetIndex===3?'%':'')) } } },
+    scales: {
+      y: { position: 'left', title: { display: true, text: '金额（元）' }, grid: { color: '#f0f0f0' }, min: 10 },
+      y1: { position: 'right', title: { display: true, text: 'ARPU / 渗透率' }, grid: { drawOnChartArea: false }, min: 0, ticks: { callback: v => v+(v<10?'%':'') } },
+      x: { grid: { display: false } }
+    }
   }
 });
 
