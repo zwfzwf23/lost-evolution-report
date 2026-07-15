@@ -528,12 +528,11 @@
   </div>
 
   <div class="card">
-    <div class="section-subtitle">三大卡池横向对比</div>
+    <div class="section-subtitle">不放回抽奖横向对比</div>
     <table>
       <thead>
         <tr>
           <th>卡池</th>
-          <th>类型</th>
           <th class="text-right">RMB消耗</th>
           <th class="text-right">参与人数（含免费）</th>
           <th class="text-right">人均抽数</th>
@@ -545,19 +544,7 @@
       </thead>
       <tbody>
         <tr>
-          <td>烽火江山</td>
-          <td>放回抽奖</td>
-          <td class="text-right">1,547.3万</td>
-          <td class="text-right">2,787,242</td>
-          <td class="text-right">12.16</td>
-          <td class="text-right">¥50.96</td>
-          <td class="text-right">33,880,546</td>
-          <td class="text-right">24%</td>
-          <td class="text-center"><span class="badge badge-green">核心主力</span></td>
-        </tr>
-        <tr>
           <td>绯夜猫影</td>
-          <td>不放回抽奖</td>
           <td class="text-right">1,770.8万</td>
           <td class="text-right">753,126</td>
           <td class="text-right">1.77</td>
@@ -568,7 +555,6 @@
         </tr>
         <tr>
           <td>涂鸦狂潮</td>
-          <td>不放回抽奖</td>
           <td class="text-right">457.9万</td>
           <td class="text-right">463,767</td>
           <td class="text-right">1.25</td>
@@ -584,17 +570,17 @@
 
   <div class="two-col">
     <div class="card">
-      <div class="section-subtitle">三大卡池RMB消耗横向比较（5日累计）</div>
+      <div class="section-subtitle">不放回抽奖RMB消耗对比（5日累计）</div>
       <div class="chart-container small">
         <canvas id="chartFenghuoShare"></canvas>
       </div>
       <div class="insight-box">
-        <strong>烽火江山：用户覆盖面广，但抽数深度仍待提升</strong>
-        5日累计付费用户30.4万（付费渗透率2.92%），卡池参与用户278.7万（参与率26.8%）。RMB消耗达<strong>1,547.3万</strong>，是当前商业化第二大收入来源（仅次于不放回抽奖的40.14%）。但人均12.16抽说明大部分用户仍停留在浅层消费——投入6-10抽就停手。67.9万人获得最高级物品（24%获取率），奖励触达面不窄但未能驱动用户追加抽取。<strong>核心问题：278.7万人参与卡池，但仅30.4万付费——免费参与的248万用户是最大的付费转化机会。</strong>
+        <strong>绯夜猫影收入远超涂鸦狂潮，但两者人均消费都偏低</strong>
+        绯夜猫影RMB消耗1,770.8万，是涂鸦狂潮（457.9万）的<strong>3.9倍</strong>。但绯夜猫影人均消费¥23.51、涂鸦狂潮仅¥9.87，两个卡池的客单价都处于低位。绯夜猫影凭借更大的用户基数（75.3万 vs 46.4万）拉开了收入差距，但人均消费深度不足的问题在两个卡池中同样严重。
       </div>
     </div>
     <div class="card">
-      <div class="section-subtitle">卡池人均抽数对比</div>
+      <div class="section-subtitle">不放回抽奖人均抽数对比</div>
       <div class="chart-container small">
         <canvas id="chartAvgDraws"></canvas>
       </div>
@@ -1295,15 +1281,15 @@ safeChart('chartScatter', {
   }
 });
 
-// 4. 烽火江山占比
+// 4. 不放回抽奖RMB消耗对比
 safeChart('chartFenghuoShare', {
   type: 'bar',
   data: {
-    labels: ['烽火江山', '绯夜猫影', '涂鸦狂潮'],
+    labels: ['绯夜猫影', '涂鸦狂潮'],
     datasets: [{
       label: 'RMB消耗（万元）',
-      data: [1547, 1771, 458],
-      backgroundColor: [COLORS.blue, COLORS.purple, COLORS.pink],
+      data: [1771, 458],
+      backgroundColor: [COLORS.purple, COLORS.pink],
       borderRadius: 6
     }]
   },
@@ -1313,14 +1299,14 @@ safeChart('chartFenghuoShare', {
   }
 });
 
-// 5. 人均抽数对比
+// 5. 不放回抽奖人均抽数对比
 safeChart('chartAvgDraws', {
   type: 'bar',
   data: {
-    labels: ['烽火江山', '绯夜猫影', '涂鸦狂潮'],
+    labels: ['绯夜猫影', '涂鸦狂潮'],
     datasets: [{
-      data: [12.16, 1.77, 1.25],
-      backgroundColor: [COLORS.blue, COLORS.purple, COLORS.pink],
+      data: [1.77, 1.25],
+      backgroundColor: [COLORS.purple, COLORS.pink],
       borderRadius: 6
     }]
   },
