@@ -676,12 +676,38 @@
     </div>
   </div>
 
-  <div class="insight-box danger">
-    <strong>不放回抽奖抽数分布：赠抽叠加奖池本身缺乏吸引力</strong>
+  <div class="section-subtitle" style="margin-top:20px;">不放回抽奖 — 抽数分布横向对比</div>
+
+  <div class="two-col">
+    <div class="card">
+      <table>
+        <thead>
+          <tr><th>抽数</th><th class="text-right">绯夜猫影<br>人数</th><th class="text-right">绯夜猫影<br>占比</th><th class="text-right">涂鸦狂潮<br>人数</th><th class="text-right">涂鸦狂潮<br>占比</th></tr>
+        </thead>
+        <tbody>
+          <tr style="background:#fff8e1;"><td><strong>1次</strong></td><td class="text-right">383,097</td><td class="text-right">43.7%</td><td class="text-right"><strong>452,636</strong></td><td class="text-right"><strong>82.1%</strong></td></tr>
+          <tr style="background:#e8f5e9;"><td><strong>2次</strong></td><td class="text-right"><strong>418,423</strong></td><td class="text-right"><strong>47.7%</strong></td><td class="text-right">79,959</td><td class="text-right">14.5%</td></tr>
+          <tr><td>3次</td><td class="text-right">36,942</td><td class="text-right">4.2%</td><td class="text-right">10,859</td><td class="text-right">2.0%</td></tr>
+          <tr><td>4次</td><td class="text-right">10,582</td><td class="text-right">1.2%</td><td class="text-right">2,298</td><td class="text-right">0.4%</td></tr>
+          <tr><td>5次</td><td class="text-right">3,651</td><td class="text-right">0.4%</td><td class="text-right">822</td><td class="text-right">0.1%</td></tr>
+          <tr><td>6次</td><td class="text-right">3,594</td><td class="text-right">0.4%</td><td class="text-right">878</td><td class="text-right">0.2%</td></tr>
+          <tr style="background:#fff3e0;"><td><strong>7次</strong></td><td class="text-right"><strong>20,596</strong></td><td class="text-right"><strong>2.4%</strong></td><td class="text-right">3,605</td><td class="text-right">0.7%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="chart-container small">
+        <canvas id="chartNoRefundDist"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <strong>抽数分布对比：绯夜猫影「1-2抽双峰」vs 涂鸦狂潮「1抽独大」</strong>
     <ul style="margin-left:16px;margin-top:4px;">
-      <li><strong>绯夜猫影</strong>：87.7万参与用户中人均1.78抽，仅7%获得高级物品（即该卡池的最终追求目标），93%的用户未达到终极奖励就已经放弃。首充赠抽贡献了一部分仅抽1次的用户，但即便排除这部分，奖品吸引力仍不足以驱动大多数用户持续投入至终点</li>
-      <li><strong>涂鸦狂潮</strong>：55.1万参与用户中人均1.25抽，82%用户1抽即结束（大部分为CBT继承），实际独立获取率仅0.81%。首充赠抽与CBT继承两重赠抽叠加，真实主动抽奖人群极少</li>
-      <li>两个不放回卡池合计贡献了<strong>39.89%</strong>的消费收入，但全部建立在人均不足2抽的极端浅层消费之上，且参与用户中有相当比例仅因赠抽而来。一旦赠抽引流效果减弱，参与人数和收入可能同时承压</li>
+      <li><strong>绯夜猫影呈典型的「1抽+2抽双峰」分布</strong>：43.7%用户1抽即停、47.7%在2抽停止，合计<strong>91.4%</strong>集中在1-2抽。人均1.78抽几乎完全由这两个区间决定。首充赠抽贡献了1抽人群中的大部分，而2抽聚集说明部分用户在第1次体验后愿意追加1次——但仅1次，之后断崖式下跌</li>
+      <li><strong>涂鸦狂潮呈极端的「1抽独大」分布</strong>：<strong>82.1%</strong>用户仅抽1次，与绯夜猫影形成鲜明对比。这主要归因于CBT继承——已拥有道具的玩家公测后自动获得、仅需确认领取，导致1抽数据被严重"灌水"。2抽及以上仅占18%，说明真实付费用户的追加意愿同样微弱</li>
+      <li><strong>7抽位置两池均出现小反弹</strong>：绯夜猫影7抽有2.4%（20,596人）的聚集、涂鸦狂潮7抽0.7%（3,605人）。7抽可能对应奖池清空/保底触发点——能走到这一步的用户是真正的高意愿群体，但占比极小，说明奖池整体驱动力严重不足</li>
     </ul>
   </div>
 </div>
@@ -1507,6 +1533,27 @@ safeChart('chartKpiArpu', {
       y1: { position: 'right', title: { display: true, text: 'ARPU / 渗透率' }, grid: { drawOnChartArea: false }, min: 0, ticks: { callback: v => v+(v<10?'%':'') } },
       x: { grid: { display: false } }
     }
+  }
+});
+// 不放回抽数分布横向对比
+safeChart('chartNoRefundDist', {
+  type: 'bar',
+  data: {
+    labels: ['1次', '2次', '3次', '4次', '5次', '6次', '7次'],
+    datasets: [
+      { label: '绯夜猫影', data: [43.7, 47.7, 4.2, 1.2, 0.4, 0.4, 2.4], backgroundColor: COLORS.accent + 'CC', borderColor: COLORS.accent, borderWidth: 1, borderRadius: 4 },
+      { label: '涂鸦狂潮', data: [82.1, 14.5, 2.0, 0.4, 0.1, 0.2, 0.7], backgroundColor: COLORS.orange + 'CC', borderColor: COLORS.orange, borderWidth: 1, borderRadius: 4 }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, usePointStyle: true, padding: 10 } },
+      tooltip: { callbacks: { label: c => c.dataset.label + ': ' + c.raw + '%' } } },
+    scales: {
+      y: { title: { display: true, text: '用户占比（%）' }, grid: { color: '#f0f0f0' }, max: 90, ticks: { callback: v => v + '%' } },
+      x: { grid: { display: false } }
+    },
+    responsive: true,
+    maintainAspectRatio: false
   }
 });
 
