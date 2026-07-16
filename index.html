@@ -123,16 +123,26 @@
     white-space: normal;
     word-break: normal;
     word-wrap: break-word;
-    max-width: 360px;
+    overflow-wrap: break-word;
     line-height: 1.5;
   }
-  table.diagnosis-matrix { table-layout: fixed; }
-  table.diagnosis-matrix th:nth-child(1), table.diagnosis-matrix td:nth-child(1) { width: 12%; }
+  table.diagnosis-matrix { table-layout: fixed; width: 100%; }
+  table.diagnosis-matrix th,
+  table.diagnosis-matrix td {
+    padding: 8px 10px;
+    font-size: 13px;
+    vertical-align: top;
+  }
+  table.diagnosis-matrix th:nth-child(1), table.diagnosis-matrix td:nth-child(1) { width: 14%; }
   table.diagnosis-matrix th:nth-child(2), table.diagnosis-matrix td:nth-child(2) { width: 10%; }
   table.diagnosis-matrix th:nth-child(3), table.diagnosis-matrix td:nth-child(3) { width: 8%; }
   table.diagnosis-matrix th:nth-child(4), table.diagnosis-matrix td:nth-child(4) { width: 8%; }
-  table.diagnosis-matrix th:nth-child(5), table.diagnosis-matrix td:nth-child(5) { width: 52%; }
-  table.diagnosis-matrix th:nth-child(6), table.diagnosis-matrix td:nth-child(6) { width: 10%; }
+  table.diagnosis-matrix th:nth-child(5), table.diagnosis-matrix td:nth-child(5) { width: 42%; }
+  table.diagnosis-matrix th:nth-child(6), table.diagnosis-matrix td:nth-child(6) { width: 18%; }
+  table.diagnosis-matrix td.diagnosis {
+    width: 42%;
+    word-break: normal;
+  }
   table tr:hover td { background: #fafbfc; }
   .text-right { text-align: right; }
   .text-center { text-align: center; }
