@@ -121,10 +121,18 @@
   }
   table td.diagnosis {
     white-space: normal;
+    word-break: normal;
     word-wrap: break-word;
     max-width: 360px;
     line-height: 1.5;
   }
+  table.diagnosis-matrix { table-layout: fixed; }
+  table.diagnosis-matrix th:nth-child(1), table.diagnosis-matrix td:nth-child(1) { width: 12%; }
+  table.diagnosis-matrix th:nth-child(2), table.diagnosis-matrix td:nth-child(2) { width: 10%; }
+  table.diagnosis-matrix th:nth-child(3), table.diagnosis-matrix td:nth-child(3) { width: 8%; }
+  table.diagnosis-matrix th:nth-child(4), table.diagnosis-matrix td:nth-child(4) { width: 8%; }
+  table.diagnosis-matrix th:nth-child(5), table.diagnosis-matrix td:nth-child(5) { width: 52%; }
+  table.diagnosis-matrix th:nth-child(6), table.diagnosis-matrix td:nth-child(6) { width: 10%; }
   table tr:hover td { background: #fafbfc; }
   .text-right { text-align: right; }
   .text-center { text-align: center; }
@@ -1168,9 +1176,9 @@
 <div class="section" id="conclusion">
   <div class="section-title">八、核心结论与优化建议</div>
 
-  <div class="card">
+  <div class="card" style="overflow-x:auto;">
     <div class="section-subtitle">商业化健康度诊断矩阵</div>
-    <table>
+    <table class="diagnosis-matrix">
       <thead>
         <tr>
           <th>商业化系统</th>
@@ -1278,9 +1286,9 @@
     </div>
   </div>
 
-  <div class="card" style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);color:#fff;">
-    <div class="section-subtitle" style="color:#fff;">总结</div>
-    <p style="font-size:14px;line-height:1.9;opacity:0.9;">
+  <div class="card" style="background:linear-gradient(135deg,#eef1fe 0%,#f0faf4 100%);border-left:4px solid var(--accent);">
+    <div class="section-subtitle">总结</div>
+    <p style="font-size:14px;line-height:1.9;color:var(--text-primary);">
       失控进化上线7日累计新增1,133万、付费总额4,253万，开局数据体量可观。但商业化结构存在<strong style="color:#f39c12;">"隐性失衡"</strong>的隐患：<br><br>
       <strong style="color:#e74c3c;">BP渗透低</strong>（1.47%，倒数第二），千万活跃用户中98.5%未接触过BP；<strong style="color:#e74c3c;">不放回抽奖"一抽即走"</strong>（人均1.25-1.78抽），39.89%的收入靠浅层消费支撑，首充¥6送18个道具（首抽6个/二抽18个）使两池各可首抽1次，但道具消耗阶梯（6→18）制造了"第二抽壁垒"，大量首充用户停在1抽无法突破。横向对比来看，角色奖池（绯夜猫影）吸引力远强于武器奖池（涂鸦狂潮）——参与人数1.6倍、RMB消耗3.8倍，加上S2赛季全额返还道具的机制进一步降低了付费门槛；<strong style="color:#4f6ef7;">烽火江山漏斗前端有效但后端断流</strong>（登录赠9抽→自费买1抽→满10送7抽的递进设计精巧，315万人参与、36.8万人付费破冰，但满10奖励消耗后人均仅追加2.5次付费，复购机制缺失；且奖池产出碎片需攒够兑换，即时获得感弱）；<strong style="color:#f39c12;">收入高度依赖抽奖和头部付费用户</strong>（抽奖占68%流水，中大R以上贡献约49%）。<br><br>
       不放回抽奖消费占比排名第一，但人均不足2抽——首充道具的6→18消耗阶梯缺陷和CBT继承双重因素叠加，使参与人数被赠抽用户大幅稀释，真实付费用户的人均抽数被显著拉低。一旦奖池吸引力下降，40%收入可能迅速蒸发。烽火江山的漏斗设计值得肯定：赠抽拉新→付费破冰→满10送7，递进逻辑清晰，但关键短板在于——满10送7的奖励消耗完后没有下一个消费目标，用户在获取奖励后直接停滞，复购动力断裂。<br><br>
